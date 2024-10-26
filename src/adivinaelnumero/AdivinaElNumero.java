@@ -1,20 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package adivinaelnumero;
 
-/**
- *
- * @author rugar
- */
+import java.util.Scanner;
+
 public class AdivinaElNumero {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+  public static void main(String[] args) {    
+    Scanner input = new Scanner(System.in);
     
+    int randomNumber = (int) (Math.random() * 100);
+    randomNumber = randomNumber == 0 ? 1 : randomNumber;
+
+    int guessedNumber;
+    int guesses = 0;
+
+    System.out.println("Elige un numero entre 1 y 100");
+    System.out.println(randomNumber);
+
+    do {
+      guesses++;
+      guessedNumber = input.nextInt();
+
+      if (guessedNumber == randomNumber) break;
+
+      if (guessedNumber < randomNumber) {
+        System.out.format("El numero es \033[32mmayor\033[0m [Llevas \033[33m%d\033[0m intentos]%n", guesses);
+      }
+      else {
+        System.out.format("El numero es \033[32mmenor\033[0m [Llevas \033[33m%d\033[0m intentos]%n", guesses);
+      }
+    } while(guessedNumber != randomNumber);
+    
+    // Tiene que ser String porque char no admite caracteres vacios
+    String plural = guesses > 1 ? "s" : "";
+    System.out.format("Adivnaste el numero en \033[33m%d\033[0m intento%s%n", guesses, plural);
+
+    input.close();
+  }
+
 }
