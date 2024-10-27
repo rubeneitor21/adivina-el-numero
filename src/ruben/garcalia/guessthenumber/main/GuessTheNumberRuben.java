@@ -1,8 +1,8 @@
-package ruben.garcalia.adivinaelnumero.main;
+package ruben.garcalia.guessthenumber.main;
 
 import java.util.Scanner;
 
-public class AdivinaElNumeroRuben {
+public class GuessTheNumberRuben {
 
   public static void main(String[] args) {    
     Scanner input = new Scanner(System.in);
