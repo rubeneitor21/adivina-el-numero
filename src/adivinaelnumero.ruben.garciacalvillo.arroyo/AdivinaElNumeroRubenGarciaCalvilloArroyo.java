@@ -1,8 +1,7 @@
-package adivinaelnumero;
+package adivinaelnumero.ruben.garciacalvillo.arroyo;
 
 import java.util.Scanner;
-
-public class AdivinaElNumero {
+public class AdivinaElNumeroRubenGarciaCalvilloArroyo {
 
   public static void main(String[] args) {    
     Scanner input = new Scanner(System.in);
@@ -14,7 +13,6 @@ public class AdivinaElNumero {
     int guesses = 0;
 
     System.out.println("Elige un numero entre 1 y 100");
-    System.out.println(randomNumber);
 
     do {
       guesses++;
