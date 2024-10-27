@@ -1,7 +1,7 @@
 package adivinaelnumero.ruben.garciacalvillo.arroyo;
 
 import java.util.Scanner;
-public class AdivinaElNumeroRubenGarciaCalvilloArroyo {
+public class AdivinaElNumeroRuben {
 
   public static void main(String[] args) {    
     Scanner input = new Scanner(System.in);
