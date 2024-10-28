@@ -1,12 +1,16 @@
 package ruben.garcalia.guessthenumber.main;
 
+import ruben.garcalia.guessthenumber.realgame.GamePreparatorRuben;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.List;
 
 public class GuessTheNumberRuben {
 
-  public static void main(String[] args) {    
+  public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
-    
+    List<Integer> numbersList = new ArrayList<>();
+
     int randomNumber = (int) (Math.random() * 100);
     randomNumber = randomNumber == 0 ? 1 : randomNumber;
 
@@ -18,6 +22,8 @@ public class GuessTheNumberRuben {
     do {
       guesses++;
       guessedNumber = input.nextInt();
+
+      numbersList.add(guessedNumber);
 
       if (guessedNumber == randomNumber) break;
 
@@ -33,6 +39,8 @@ public class GuessTheNumberRuben {
     System.out.format("You got it in \033[33m%d\033[0m %s%n", guesses, plural);
 
     input.close();
+
+    GamePreparatorRuben.printErrors(numbersList);
   }
 
 }
