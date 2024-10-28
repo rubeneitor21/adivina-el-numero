@@ -29,7 +29,6 @@ public class GuessTheNumberRuben {
       }
     } while(guessedNumber != randomNumber);
     
-    // Tiene que ser String porque char no admite caracteres vacios
     String plural = guesses > 1 ? "tries" : "try";
     System.out.format("You got it in \033[33m%d\033[0m %s%n", guesses, plural);
 
