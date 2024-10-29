@@ -6,10 +6,10 @@ package ruben.garcalia.guessthenumber.realgame.drawutils;
 
 public class ColorRuben {
     
-    float r;
-    float g;
-    float b;
-    float a;
+    public float r;
+    public float g;
+    public float b;
+    public float a;
     
     public ColorRuben(float _r, float _g, float _b) {
        a = 1f;
