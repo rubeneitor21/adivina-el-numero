@@ -27,9 +27,10 @@ public class GameRuben {
 	// The window handle
 	private long window;
         
-        private List<ObjectRuben> objs = new ArrayList<>();
-        private CharacterRuben character = new CharacterRuben("Main Character",0f,0f,10f,10f);
-        final private SceneRuben[] scenes = {};
+        // Esto lo mismo necesita una vuelta
+        public List<ObjectRuben> objs = new ArrayList<>();
+        public CharacterRuben character = new CharacterRuben("Main Character",0f,0f,0.1f,0.1f);
+        final public SceneRuben[] scenes = {};
 
 	public void run() {
 		init();
@@ -49,7 +50,7 @@ public class GameRuben {
 	private void init() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
-		//GLFWErrorCallback.createPrint(System.err).set();
+		GLFWErrorCallback.createPrint(System.err).set();
 
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
 		if ( !glfwInit() )
@@ -58,7 +59,7 @@ public class GameRuben {
 		// Configure GLFW
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 		// Create the window
 		window = glfwCreateWindow(600, 600, ":D", NULL, NULL);
@@ -71,7 +72,7 @@ public class GameRuben {
                             glfwSetWindowShouldClose(window, true);
                         }
                         
-                        character.update(window, key, scancode, action, mods);
+                        character.getInputs(window, key, scancode, action, mods);
 		});
 
 		// Get the thread stack and push a new frame
@@ -97,6 +98,8 @@ public class GameRuben {
 		glfwMakeContextCurrent(window);
 		// Enable v-sync
 		glfwSwapInterval(1);
+                
+//                glEnable(GL_TEXTURE);
 
 		// Make the window visible
 		glfwShowWindow(window);
@@ -119,6 +122,8 @@ public class GameRuben {
 		// the window or has pressed the ESCAPE key.
 		while ( !glfwWindowShouldClose(window) ) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+                        
+                        character.update();
                         
 			glfwSwapBuffers(window); // swap the color buffers
                         

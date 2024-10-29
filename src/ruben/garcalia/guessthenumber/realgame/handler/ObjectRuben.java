@@ -7,6 +7,10 @@ package ruben.garcalia.guessthenumber.realgame.handler;
 import ruben.garcalia.guessthenumber.realgame.drawutils.ColorRuben;
 import ruben.garcalia.guessthenumber.realgame.drawutils.DrawUtilsRuben;
 
+import org.lwjgl.glfw.*;
+import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.openvr.Texture;
+
 public class ObjectRuben {
     
     public float x;
@@ -15,6 +19,7 @@ public class ObjectRuben {
     public float height;
     public ColorRuben color;
     public String name;
+    public Texture texture;
     
     public ObjectRuben(String name, float x, float y, float width, float height, ColorRuben color) {
         this.x = x;
@@ -34,7 +39,7 @@ public class ObjectRuben {
         this.name = name;
     }
     
-    public void update(long window, int key, int scancode, int action, int mods) {
+    public void update() {
         // La logica que me de por poner supongo
         draw();
     }
