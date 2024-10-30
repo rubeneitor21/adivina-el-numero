@@ -83,7 +83,6 @@ public class ObjectRuben {
                     
 
                     for (int imageIndex = 0; imageIndex < pixels.length; imageIndex++) {
-                        System.out.println(imageIndex);
                         newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
                         newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
                         newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
@@ -127,7 +126,6 @@ public class ObjectRuben {
                     
 
                     for (int imageIndex = 0; imageIndex < pixels.length; imageIndex++) {
-                        System.out.println(imageIndex);
                         newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
                         newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
                         newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
@@ -179,18 +177,22 @@ public class ObjectRuben {
         // 1 1  FlipX
         // 0 1
         // 0 0
+        
         // 0 1
         // 0 0  FlipY 
         // 1 0
         // 1 1
+        
         // 0 0
         // 0 1  Normal
         // 1 1
         // 1 0
+        
         // 1 1
         // 1 0  FlipX y FlipY
         // 0 0
         // 0 1
+        
         float[] vertex = {
             this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 0.0f,
             this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 1.0f,
