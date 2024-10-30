@@ -15,6 +15,8 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import java.nio.*;
+import java.time.Duration;
+import java.time.Instant;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -30,7 +32,7 @@ public class GameRuben {
 
     // Esto lo mismo necesita una vuelta
     public List<ObjectRuben> objs = new ArrayList<>();
-    public CharacterRuben character = new CharacterRuben("Main Character", "bicho.png", 0f, 0f, 0.1f, 0.1f);;
+    public CharacterRuben character = new CharacterRuben("Main Character", "prueba.png", 0f, 0f, 1f, 1f);;
     final public SceneRuben[] scenes = {};
     
     private int shaderProgram;
@@ -131,7 +133,6 @@ public class GameRuben {
                 + "    TexCoord = aTexCoord;\n"
                 + "}\n";
 
-        // Fragment Shader como un String en Java
         String fragmentShaderSource = "#version 330 core\n"
                 + "out vec4 FragColor;\n"
                 + "in vec2 TexCoord;\n"
@@ -161,7 +162,10 @@ public class GameRuben {
         
         character.createVertex();
         character.loadTexture();
-
+        
+        double deltaTime = 0;
+        double beginTime = System.nanoTime();
+        
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window)) {
@@ -169,13 +173,18 @@ public class GameRuben {
             
             glUseProgram(shaderProgram);
 
-            character.update();
+            character.update(deltaTime);
 
             glfwSwapBuffers(window); // swap the color buffers
 
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();
+            
+            deltaTime = (System.nanoTime() - beginTime) / 1e9;
+            beginTime = System.nanoTime();
+//            if (deltaTime != 0)
+//                System.out.println(1 / deltaTime);
         }
     }
 

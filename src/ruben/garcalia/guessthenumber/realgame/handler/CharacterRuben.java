@@ -14,6 +14,8 @@ public class CharacterRuben extends ObjectRuben {
     
     private Map<Integer, Boolean> keys = new HashMap<>();
     
+    public float speed = 1f;
+    
     public CharacterRuben(String name, String texturePath, float x, float y, float width, float height, ColorRuben color) {
         super(name, texturePath, x, y, width, height, color);
     }
@@ -21,32 +23,44 @@ public class CharacterRuben extends ObjectRuben {
     public CharacterRuben(String name, String texturePath, float x, float y, float width, float height) {
         super(name, texturePath, x, y, width, height);
     }
-    
+
     @Override
-    public void update() {
+    public void update(double deltaTime) {
         float newX = 0f;
         float newY = 0f;
         
         if (keys.get(GLFW_KEY_UP) != null && keys.get(GLFW_KEY_UP)) {
-            newY += 0.01f;
+            newY += speed;
         }
         if (keys.get(GLFW_KEY_DOWN) != null && keys.get(GLFW_KEY_DOWN)) {
-            newY -= 0.01f;
+            newY -= speed;
         }
         if (keys.get(GLFW_KEY_RIGHT) != null && keys.get(GLFW_KEY_RIGHT)) {
-            newX += 0.01f;
+            newX += speed;
         }
         if (keys.get(GLFW_KEY_LEFT) != null && keys.get(GLFW_KEY_LEFT)) {
-            newX -= 0.01f;
+            newX -= speed;
         }
         
-        this.x += newX;
-        this.y += newY;
+        this.x += newX * deltaTime;
+        this.y += newY * deltaTime;
+        
+        if (newX != 0) {
+            this.flipX = newX > 0;
+        }
         
         if (newX != 0 || newY != 0) {
-            this.flipX = newX > 0;
-//            this.flipY = newY > 0;
             createVertex();
+        }
+        
+        elapsedTime += deltaTime;
+        if (elapsedTime >= 1/fps) {
+            textureIndex++;
+            elapsedTime = 0;
+        }
+
+        if (textureIndex >= textureBuffer.size()) {
+            textureIndex = 0;
         }
         
         draw();
