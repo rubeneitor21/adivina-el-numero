@@ -14,12 +14,12 @@ public class CharacterRuben extends ObjectRuben {
     
     private Map<Integer, Boolean> keys = new HashMap<>();
     
-    public CharacterRuben(String name, float x, float y, float width, float height, ColorRuben color) {
-        super(name, x, y, width, height, color);
+    public CharacterRuben(String name, String texturePath, float x, float y, float width, float height, ColorRuben color) {
+        super(name, texturePath, x, y, width, height, color);
     }
     
-    public CharacterRuben(String name, float x, float y, float width, float height) {
-        super(name, x, y, width, height);
+    public CharacterRuben(String name, String texturePath, float x, float y, float width, float height) {
+        super(name, texturePath, x, y, width, height);
     }
     
     @Override
@@ -43,6 +43,12 @@ public class CharacterRuben extends ObjectRuben {
         this.x += newX;
         this.y += newY;
         
+        if (newX != 0 || newY != 0) {
+            this.flipX = newX > 0;
+//            this.flipY = newY > 0;
+            createVertex();
+        }
+        
         draw();
     }
     
@@ -52,6 +58,15 @@ public class CharacterRuben extends ObjectRuben {
         }
         if (action == GLFW_RELEASE) {
             this.keys.put(key, false);
+        }
+        
+        if (action == GLFW_PRESS) {
+            if (key == GLFW_KEY_J) {
+                this.flipX = !this.flipX;
+            }
+            else if (key == GLFW_KEY_L) {
+                this.flipY = !this.flipY;
+            }
         }
     }
 }
