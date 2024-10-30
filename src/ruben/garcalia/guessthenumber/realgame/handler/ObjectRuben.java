@@ -46,13 +46,13 @@ public class ObjectRuben {
     private List<Integer> textureIDs = new ArrayList<>();
     private int[] indexs;
     
-    public int cellSizeX = 32;
-    public int cellSizeY = 32;
+    public int cellSizeX = 320;
+    public int cellSizeY = 320;
 
     public boolean flipX = false;
     public boolean flipY = false;
     
-    public float fps = 1;
+    public float fps = 8;
     public float elapsedTime = 0;
     public int textureIndex = 0;
 

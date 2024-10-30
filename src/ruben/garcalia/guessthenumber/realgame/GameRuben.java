@@ -32,7 +32,7 @@ public class GameRuben {
 
     // Esto lo mismo necesita una vuelta
     public List<ObjectRuben> objs = new ArrayList<>();
-    public CharacterRuben character = new CharacterRuben("Main Character", "prueba.png", 0f, 0f, 1f, 1f);;
+    public CharacterRuben character = new CharacterRuben("Main Character", "soldier.png", 0f, 0f, 1f, 1f);;
     final public SceneRuben[] scenes = {};
     
     private int shaderProgram;
