@@ -73,14 +73,5 @@ public class CharacterRuben extends ObjectRuben {
         if (action == GLFW_RELEASE) {
             this.keys.put(key, false);
         }
-        
-        if (action == GLFW_PRESS) {
-            if (key == GLFW_KEY_J) {
-                this.flipX = !this.flipX;
-            }
-            else if (key == GLFW_KEY_L) {
-                this.flipY = !this.flipY;
-            }
-        }
     }
 }
