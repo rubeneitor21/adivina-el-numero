@@ -45,6 +45,9 @@ public class ObjectRuben {
     private int VAO, VBO, EBO;
     private List<Integer> textureIDs = new ArrayList<>();
     private int[] indexs;
+    
+    public int cellSizeX = 32;
+    public int cellSizeY = 32;
 
     public boolean flipX = false;
     public boolean flipY = false;
@@ -72,14 +75,14 @@ public class ObjectRuben {
             int widthImage = img.getWidth();
             int heightImage = img.getHeight();
 
-            int rows = widthImage / 32;
-            int cols = heightImage / 32;
+            int rows = widthImage / cellSizeX;
+            int cols = heightImage / cellSizeY;
 
             for (int j = 0; j < cols; j++) {
                 for (int i = 0; i < rows; i++) {
-                    ByteBuffer newBuffer = ByteBuffer.allocateDirect(32 * 32 * 16);
-                    int[] pixelsTemp = new int[32*32*4];
-                    int[] pixels = img.getRGB(i * 32, j * 32, 32, 32, pixelsTemp, 0, 32);
+                    ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
+                    int[] pixelsTemp = new int[cellSizeX*cellSizeY*4];
+                    int[] pixels = img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
                     
 
                     for (int imageIndex = 0; imageIndex < pixels.length; imageIndex++) {
@@ -115,14 +118,14 @@ public class ObjectRuben {
             int widthImage = img.getWidth();
             int heightImage = img.getHeight();
 
-            int rows = widthImage / 32;
-            int cols = heightImage / 32;
+            int rows = widthImage / cellSizeX;
+            int cols = heightImage / cellSizeY;
 
             for (int j = 0; j < cols; j++) {
                 for (int i = 0; i < rows; i++) {
-                    ByteBuffer newBuffer = ByteBuffer.allocateDirect(32 * 32 * 16);
-                    int[] pixelsTemp = new int[32*32*4];
-                    int[] pixels = img.getRGB(i * 32, j * 32, 32, 32, pixelsTemp, 0, 32);
+                    ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
+                    int[] pixelsTemp = new int[cellSizeX*cellSizeY*4];
+                    int[] pixels = img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
                     
 
                     for (int imageIndex = 0; imageIndex < pixels.length; imageIndex++) {
@@ -159,8 +162,8 @@ public class ObjectRuben {
                 GL_TEXTURE_2D,
                 0,
                 GL_RGBA,
-                32, // Ancho de la textura
-                32, // Alto de la textura
+                cellSizeX, // Ancho de la textura
+                cellSizeY, // Alto de la textura
                 0,
                 GL_RGBA,
                 GL_UNSIGNED_BYTE, // GL_UNSIGNED_BYTE si cada canal ocupa 1 byte
