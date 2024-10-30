@@ -1,4 +1,4 @@
-# Adivina el numero
+# Adivina el numero (WIP)
 Un repo donde se lleva el tipico juego de adivinar el numero al siguiente nivel
 
 Haciendo una pequeña implementacion de un motor de juegos en java, haciendo uso de LWJGL que provee bindings para OpenGL, OpenAl y GLFW
