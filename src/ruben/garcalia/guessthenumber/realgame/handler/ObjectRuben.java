@@ -10,26 +10,21 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import org.lwjgl.BufferUtils;
-import ruben.garcalia.guessthenumber.realgame.drawutils.ColorRuben;
-import ruben.garcalia.guessthenumber.realgame.drawutils.DrawUtilsRuben;
 
-import org.lwjgl.glfw.*;
+import ruben.garcalia.guessthenumber.realgame.drawutils.ColorRuben;
+
+import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.ARBVertexArrayObject.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import org.lwjgl.openvr.Texture;
-import org.lwjgl.opengl.GLCapabilities;
 
 public class ObjectRuben {
 
@@ -82,10 +77,10 @@ public class ObjectRuben {
                 for (int i = 0; i < rows; i++) {
                     ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
                     int[] pixelsTemp = new int[cellSizeX*cellSizeY*4];
-                    int[] pixels = img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
+                    img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
                     
 
-                    for (int imageIndex = 0; imageIndex < pixels.length; imageIndex++) {
+                    for (int imageIndex = 0; imageIndex < pixelsTemp.length; imageIndex++) {
                         newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
                         newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
                         newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
@@ -285,7 +280,6 @@ public class ObjectRuben {
     }
 
     public void draw() {
-        // Enlazar textura, el index deberia actualizarlo segun el deltaTime?
         glBindTexture(GL_TEXTURE_2D, textureIDs.get(textureIndex));
 
         // Enlazar el VAO
