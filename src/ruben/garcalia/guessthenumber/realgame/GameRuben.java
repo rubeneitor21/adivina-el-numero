@@ -32,7 +32,10 @@ public class GameRuben {
 
     // Esto lo mismo necesita una vuelta
     public List<ObjectRuben> objs = new ArrayList<>();
-    public CharacterRuben character = new CharacterRuben("Main Character", "soldier.png", 0f, 0f, 1f, 1f);;
+    
+    public CharacterRuben character = new CharacterRuben("Main Character", "soldier.png", 0f, 0f, 1f, 1f);
+    public ObjectRuben systemObject = new ObjectRuben("System controller", "soldier.png", 0f, 0f, 0.5f, 0.5f);
+    
     final public SceneRuben[] scenes = {};
     
     private int shaderProgram;
@@ -163,8 +166,14 @@ public class GameRuben {
         character.createVertex();
         character.loadTexture();
         
+        systemObject.createVertex();
+        systemObject.loadTexture();
+        
         double deltaTime = 0;
         double beginTime = System.nanoTime();
+        
+        double elapsedTime = 0;
+        boolean gameEnd = false;
         
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -172,9 +181,23 @@ public class GameRuben {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             
             glUseProgram(shaderProgram);
-
-            character.update(deltaTime);
-
+            
+            // No hay tiempo para hacer las escenas, va a estar todo un poco hardcodeado.
+    
+            // Animacion de inicio
+            if (elapsedTime < 20) {
+                systemObject.update(deltaTime);
+            }
+            
+            // Parte jugable, probablemente mover solo cajas
+            else if (!gameEnd) {
+                character.update(deltaTime);
+            }
+            
+            else {
+                glfwSetWindowShouldClose(window, true);
+            }
+            
             glfwSwapBuffers(window); // swap the color buffers
 
             // Poll for window events. The key callback above will only be
@@ -182,6 +205,7 @@ public class GameRuben {
             glfwPollEvents();
             
             deltaTime = (System.nanoTime() - beginTime) / 1e9;
+            elapsedTime += deltaTime;
             beginTime = System.nanoTime();
 //            if (deltaTime != 0)
 //                System.out.println(1 / deltaTime);
