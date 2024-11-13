@@ -33,8 +33,8 @@ public class GameRuben {
     // Esto lo mismo necesita una vuelta
     public List<ObjectRuben> objs = new ArrayList<>();
     
-    public CharacterRuben character = new CharacterRuben("Main Character", "soldier.png", 0f, 0f, 1f, 1f);
-    public ObjectRuben systemObject = new ObjectRuben("System controller", "soldier.png", 0f, 0f, 0.5f, 0.5f);
+    public CharacterRuben character = new CharacterRuben("Main Character", "soldier.png", 0f, 0f, 1f, 1f, 2, 2);
+    public ObjectRuben systemObject = new ObjectRuben("System controller", "meca_idle.png", 0f, 0f, 0.5f, 0.5f, 2,3);
     
     final public SceneRuben[] scenes = {};
     

@@ -41,8 +41,10 @@ public class ObjectRuben {
   private List<Integer> textureIDs = new ArrayList<>();
   private int[] indexs;
 
-  public int cellSizeX = 320;
-  public int cellSizeY = 320;
+  public int rows = 1;
+  public int cols = 1;
+  public int cellSizeX;
+  public int cellSizeY;
 
   public boolean flipX = false;
   public boolean flipY = false;
@@ -70,24 +72,22 @@ public class ObjectRuben {
       int widthImage = img.getWidth();
       int heightImage = img.getHeight();
 
-      int rows = widthImage / cellSizeX;
-      int cols = heightImage / cellSizeY;
+      int cellSizeX = widthImage / rows;
+      int cellSizeY = heightImage / cols;
 
-      for (int j = 0; j < cols; j++) {
-        for (int i = 0; i < rows; i++) {
-          ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
-          int[] pixelsTemp = new int[cellSizeX * cellSizeY * 4];
-          img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
+      for (int i = 0; i < cols * rows; i++) {
+        ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
+        int[] pixelsTemp = new int[cellSizeX * cellSizeY * 4];
+        img.getRGB(i / rows * cellSizeX, i / cols * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
 
-          for (int imageIndex = 0; imageIndex < pixelsTemp.length; imageIndex++) {
-            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
-            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
-            newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
-            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 24) & 0xFF)); // A
-          }
-          newBuffer.flip();
-          this.textureBuffer.add(newBuffer);
+        for (int imageIndex = 0; imageIndex < pixelsTemp.length; imageIndex++) {
+          newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
+          newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
+          newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
+          newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 24) & 0xFF)); // A
         }
+        newBuffer.flip();
+        this.textureBuffer.add(newBuffer);
       }
     } catch (IOException ex) {
       Logger.getLogger(ObjectRuben.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,7 +95,7 @@ public class ObjectRuben {
 
   }
 
-  public ObjectRuben(String name, String texturePath, float x, float y, float width, float height) {
+  public ObjectRuben(String name, String texturePath, float x, float y, float width, float height, int cols, int rows) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -103,6 +103,8 @@ public class ObjectRuben {
     this.color = new ColorRuben(1f, 1f, 1f, 1f);
     this.name = name;
     this.texturePath = texturePath;
+    this.cols = cols;
+    this.rows = rows; 
 
     String executionPath = System.getProperty("user.dir");
 
@@ -112,24 +114,22 @@ public class ObjectRuben {
       int widthImage = img.getWidth();
       int heightImage = img.getHeight();
 
-      int rows = widthImage / cellSizeX;
-      int cols = heightImage / cellSizeY;
+      cellSizeX = widthImage / cols;
+      cellSizeY = heightImage / rows;
 
-      for (int j = 0; j < cols; j++) {
-        for (int i = 0; i < rows; i++) {
-          ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
-          int[] pixelsTemp = new int[cellSizeX * cellSizeY * 4];
-          int[] pixels = img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
+      for (int i = 0; i < cols * rows; i++) {
+        ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
+        int[] pixelsTemp = new int[cellSizeX * cellSizeY * 4];
+        img.getRGB(i / rows * cellSizeX, i % cols * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
 
-          for (int imageIndex = 0; imageIndex < pixels.length; imageIndex++) {
-            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
-            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
-            newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
-            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 24) & 0xFF)); // A
-          }
-          newBuffer.flip();
-          this.textureBuffer.add(newBuffer);
+        for (int imageIndex = 0; imageIndex < pixelsTemp.length; imageIndex++) {
+          newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
+          newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
+          newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
+          newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 24) & 0xFF)); // A
         }
+        newBuffer.flip();
+        this.textureBuffer.add(newBuffer);
       }
     } catch (IOException ex) {
       Logger.getLogger(ObjectRuben.class.getName()).log(Level.SEVERE, null, ex);
