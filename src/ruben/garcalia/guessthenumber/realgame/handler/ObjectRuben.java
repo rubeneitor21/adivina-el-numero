@@ -28,268 +28,266 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class ObjectRuben {
 
-    public float x;
-    public float y;
-    public float width;
-    public float height;
+  public float x;
+  public float y;
+  public float width;
+  public float height;
 
-    public ColorRuben color;
-    public String name;
-    public List<ByteBuffer> textureBuffer = new ArrayList<>();
+  public ColorRuben color;
+  public String name;
+  public List<ByteBuffer> textureBuffer = new ArrayList<>();
 
-    private int VAO, VBO, EBO;
-    private List<Integer> textureIDs = new ArrayList<>();
-    private int[] indexs;
-    
-    public int cellSizeX = 320;
-    public int cellSizeY = 320;
+  private int VAO, VBO, EBO;
+  private List<Integer> textureIDs = new ArrayList<>();
+  private int[] indexs;
 
-    public boolean flipX = false;
-    public boolean flipY = false;
-    
-    public float fps = 8;
-    public float elapsedTime = 0;
-    public int textureIndex = 0;
+  public int cellSizeX = 320;
+  public int cellSizeY = 320;
 
-    String texturePath;
+  public boolean flipX = false;
+  public boolean flipY = false;
 
-    public ObjectRuben(String name, String texturePath, float x, float y, float width, float height, ColorRuben color) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.color = color;
-        this.name = name;
-        this.texturePath = texturePath;
+  public float fps = 8;
+  public float elapsedTime = 0;
+  public int textureIndex = 0;
 
-        String executionPath = System.getProperty("user.dir");
+  String texturePath;
 
-        try {
-            System.out.println(executionPath + "/" + this.texturePath);
-            BufferedImage img = ImageIO.read(new File(executionPath + "/" + this.texturePath));
-            int widthImage = img.getWidth();
-            int heightImage = img.getHeight();
+  public ObjectRuben(String name, String texturePath, float x, float y, float width, float height, ColorRuben color) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.name = name;
+    this.texturePath = texturePath;
 
-            int rows = widthImage / cellSizeX;
-            int cols = heightImage / cellSizeY;
+    String executionPath = System.getProperty("user.dir");
 
-            for (int j = 0; j < cols; j++) {
-                for (int i = 0; i < rows; i++) {
-                    ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
-                    int[] pixelsTemp = new int[cellSizeX*cellSizeY*4];
-                    img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
-                    
+    try {
+      System.out.println(executionPath + "/" + this.texturePath);
+      BufferedImage img = ImageIO.read(new File(executionPath + "/" + this.texturePath));
+      int widthImage = img.getWidth();
+      int heightImage = img.getHeight();
 
-                    for (int imageIndex = 0; imageIndex < pixelsTemp.length; imageIndex++) {
-                        newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
-                        newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
-                        newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
-                        newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 24) & 0xFF)); // A
-                    }
-                    newBuffer.flip();
-                    this.textureBuffer.add(newBuffer);
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ObjectRuben.class.getName()).log(Level.SEVERE, null, ex);
+      int rows = widthImage / cellSizeX;
+      int cols = heightImage / cellSizeY;
+
+      for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < rows; i++) {
+          ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
+          int[] pixelsTemp = new int[cellSizeX * cellSizeY * 4];
+          img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
+
+          for (int imageIndex = 0; imageIndex < pixelsTemp.length; imageIndex++) {
+            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
+            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
+            newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
+            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 24) & 0xFF)); // A
+          }
+          newBuffer.flip();
+          this.textureBuffer.add(newBuffer);
         }
-
+      }
+    } catch (IOException ex) {
+      Logger.getLogger(ObjectRuben.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    public ObjectRuben(String name, String texturePath, float x, float y, float width, float height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.color = new ColorRuben(1f, 1f, 1f, 1f);
-        this.name = name;
-        this.texturePath = texturePath;
+  }
 
-        String executionPath = System.getProperty("user.dir");
+  public ObjectRuben(String name, String texturePath, float x, float y, float width, float height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = new ColorRuben(1f, 1f, 1f, 1f);
+    this.name = name;
+    this.texturePath = texturePath;
 
-        try {
-            System.out.println(executionPath + "/" + this.texturePath);
-            BufferedImage img = ImageIO.read(new File(executionPath + "/" + this.texturePath));
-            int widthImage = img.getWidth();
-            int heightImage = img.getHeight();
+    String executionPath = System.getProperty("user.dir");
 
-            int rows = widthImage / cellSizeX;
-            int cols = heightImage / cellSizeY;
+    try {
+      System.out.println(executionPath + "/" + this.texturePath);
+      BufferedImage img = ImageIO.read(new File(executionPath + "/" + this.texturePath));
+      int widthImage = img.getWidth();
+      int heightImage = img.getHeight();
 
-            for (int j = 0; j < cols; j++) {
-                for (int i = 0; i < rows; i++) {
-                    ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
-                    int[] pixelsTemp = new int[cellSizeX*cellSizeY*4];
-                    int[] pixels = img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
-                    
+      int rows = widthImage / cellSizeX;
+      int cols = heightImage / cellSizeY;
 
-                    for (int imageIndex = 0; imageIndex < pixels.length; imageIndex++) {
-                        newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
-                        newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
-                        newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
-                        newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 24) & 0xFF)); // A
-                    }
-                    newBuffer.flip();
-                    this.textureBuffer.add(newBuffer);
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ObjectRuben.class.getName()).log(Level.SEVERE, null, ex);
+      for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < rows; i++) {
+          ByteBuffer newBuffer = ByteBuffer.allocateDirect(cellSizeX * cellSizeY * 16);
+          int[] pixelsTemp = new int[cellSizeX * cellSizeY * 4];
+          int[] pixels = img.getRGB(i * cellSizeX, j * cellSizeY, cellSizeX, cellSizeY, pixelsTemp, 0, cellSizeX);
+
+          for (int imageIndex = 0; imageIndex < pixels.length; imageIndex++) {
+            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 16) & 0xFF)); // R
+            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 8) & 0xFF)); // G
+            newBuffer.put((byte) ((pixelsTemp[imageIndex]) & 0xFF)); // B
+            newBuffer.put((byte) ((pixelsTemp[imageIndex] >> 24) & 0xFF)); // A
+          }
+          newBuffer.flip();
+          this.textureBuffer.add(newBuffer);
         }
-
+      }
+    } catch (IOException ex) {
+      Logger.getLogger(ObjectRuben.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    public void loadTexture() {
-        for (ByteBuffer texture : textureBuffer) {
-            int textureID = glGenTextures();
+  }
 
-        // Paso 2: Enlazar la textura
-        glBindTexture(GL_TEXTURE_2D, textureID);
+  public void loadTexture() {
+    for (ByteBuffer texture : textureBuffer) {
+      int textureID = glGenTextures();
 
-        // Paso 3: Configurar los parámetros de la textura
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      // Paso 2: Enlazar la textura
+      glBindTexture(GL_TEXTURE_2D, textureID);
 
-        // Paso 4: Cargar la textura en OpenGL
-        glTexImage2D(
-                GL_TEXTURE_2D,
-                0,
-                GL_RGBA,
-                cellSizeX, // Ancho de la textura
-                cellSizeY, // Alto de la textura
-                0,
-                GL_RGBA,
-                GL_UNSIGNED_BYTE, // GL_UNSIGNED_BYTE si cada canal ocupa 1 byte
-                texture
-        );
+      // Paso 3: Configurar los parámetros de la textura
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        textureIDs.add(textureID);
-        }     
+      // Paso 4: Cargar la textura en OpenGL
+      glTexImage2D(
+          GL_TEXTURE_2D,
+          0,
+          GL_RGBA,
+          cellSizeX, // Ancho de la textura
+          cellSizeY, // Alto de la textura
+          0,
+          GL_RGBA,
+          GL_UNSIGNED_BYTE, // GL_UNSIGNED_BYTE si cada canal ocupa 1 byte
+          texture);
+
+      textureIDs.add(textureID);
+    }
+  }
+
+  public void createVertex() {
+
+    // 1 0
+    // 1 1 FlipX
+    // 0 1
+    // 0 0
+
+    // 0 1
+    // 0 0 FlipY
+    // 1 0
+    // 1 1
+
+    // 0 0
+    // 0 1 Normal
+    // 1 1
+    // 1 0
+
+    // 1 1
+    // 1 0 FlipX y FlipY
+    // 0 0
+    // 0 1
+
+    float[] vertex = {
+        this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 0.0f,
+        this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 1.0f,
+        this.x + (this.width / 2), this.y - (this.height / 2), 0.0f, 1.0f, 1.0f,
+        this.x + (this.width / 2), this.y + (this.height / 2), 0.0f, 1.0f, 0.0f
+    };
+
+    if (this.flipX && this.flipY) {
+      float[] FlipBoth = {
+          this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 1.0f, 1.0f,
+          this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 1.0f, 0.0f,
+          this.x + (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 0.0f,
+          this.x + (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 1.0f
+      };
+      vertex = FlipBoth;
     }
 
-    public void createVertex() {
-
-        // 1 0
-        // 1 1  FlipX
-        // 0 1
-        // 0 0
-        
-        // 0 1
-        // 0 0  FlipY 
-        // 1 0
-        // 1 1
-        
-        // 0 0
-        // 0 1  Normal
-        // 1 1
-        // 1 0
-        
-        // 1 1
-        // 1 0  FlipX y FlipY
-        // 0 0
-        // 0 1
-        
-        float[] vertex = {
-            this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 0.0f,
-            this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 1.0f,
-            this.x + (this.width / 2), this.y - (this.height / 2), 0.0f, 1.0f, 1.0f,
-            this.x + (this.width / 2), this.y + (this.height / 2), 0.0f, 1.0f, 0.0f
-        };
-
-        if (this.flipX && this.flipY) {
-            float[] FlipBoth = {
-                this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 1.0f, 1.0f,
-                this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 1.0f, 0.0f,
-                this.x + (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 0.0f,
-                this.x + (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 1.0f
-            };
-            vertex = FlipBoth;
-        }
-
-        if (this.flipX && !this.flipY) {
-            float[] FlipBoth = {
-                this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 1.0f, 0.0f,
-                this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 1.0f, 1.0f,
-                this.x + (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 1.0f,
-                this.x + (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 0.0f
-            };
-            vertex = FlipBoth;
-        }
-
-        if (!this.flipX && this.flipY) {
-            float[] FlipBoth = {
-                this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 1.0f,
-                this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 0.0f,
-                this.x + (this.width / 2), this.y - (this.height / 2), 0.0f, 1.0f, 0.0f,
-                this.x + (this.width / 2), this.y + (this.height / 2), 0.0f, 1.0f, 1.0f
-            };
-            vertex = FlipBoth;
-        }
-
-//        this.vertexs = vertex;
-        int[] index = {0, 1, 2, 0, 2, 3};
-        this.indexs = index;
-
-        // Crear VAO, VBO y EBO
-        VAO = glGenVertexArrays();
-        VBO = glGenBuffers();
-        EBO = glGenBuffers();
-
-        FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertex.length);
-        vertexBuffer.put(vertex).flip(); // Añadir los datos y preparar el buffer para lectura
-
-        // Crear el buffer de índices
-        IntBuffer indexBuffer = BufferUtils.createIntBuffer(index.length);
-        indexBuffer.put(index).flip(); // Añadir los datos y preparar el buffer para lectura
-
-        glBindVertexArray(VAO);
-
-        // Configurar VBO
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW); // Utiliza el FloatBuffer
-
-        // Configurar EBO
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL_STATIC_DRAW);
-
-        // Definir atributos de posición (layout location = 0) y coordenadas de textura (layout location = 1)
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * Float.BYTES, 0);
-        glEnableVertexAttribArray(0);
-
-        glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * Float.BYTES, 3 * Float.BYTES);
-        glEnableVertexAttribArray(1);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+    if (this.flipX && !this.flipY) {
+      float[] FlipBoth = {
+          this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 1.0f, 0.0f,
+          this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 1.0f, 1.0f,
+          this.x + (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 1.0f,
+          this.x + (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 0.0f
+      };
+      vertex = FlipBoth;
     }
 
-    public void update(double deltaTime) {
-//        createVertex();
-        elapsedTime += deltaTime;
-        if (elapsedTime >= 1/fps) {
-            textureIndex++;
-            elapsedTime = 0;
-        }
-
-        if (textureIndex >= textureBuffer.size()) {
-            textureIndex = 0;
-        }
-        draw();
+    if (!this.flipX && this.flipY) {
+      float[] FlipBoth = {
+          this.x - (this.width / 2), this.y + (this.height / 2), 0.0f, 0.0f, 1.0f,
+          this.x - (this.width / 2), this.y - (this.height / 2), 0.0f, 0.0f, 0.0f,
+          this.x + (this.width / 2), this.y - (this.height / 2), 0.0f, 1.0f, 0.0f,
+          this.x + (this.width / 2), this.y + (this.height / 2), 0.0f, 1.0f, 1.0f
+      };
+      vertex = FlipBoth;
     }
 
-    public void draw() {
-        glBindTexture(GL_TEXTURE_2D, textureIDs.get(textureIndex));
+    // this.vertexs = vertex;
+    int[] index = { 0, 1, 2, 0, 2, 3 };
+    this.indexs = index;
 
-        // Enlazar el VAO
-        glBindVertexArray(VAO);
+    // Crear VAO, VBO y EBO
+    VAO = glGenVertexArrays();
+    VBO = glGenBuffers();
+    EBO = glGenBuffers();
 
-        // Dibujar, pilla el vao vinculado y la textura
-        glDrawElements(GL_TRIANGLES, this.indexs.length, GL_UNSIGNED_INT, 0);
+    FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertex.length);
+    vertexBuffer.put(vertex).flip(); // Añadir los datos y preparar el buffer para lectura
 
-        // Los desvincula para evitar modificaciones accidentales
-        glBindVertexArray(0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+    // Crear el buffer de índices
+    IntBuffer indexBuffer = BufferUtils.createIntBuffer(index.length);
+    indexBuffer.put(index).flip(); // Añadir los datos y preparar el buffer para lectura
+
+    glBindVertexArray(VAO);
+
+    // Configurar VBO
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW); // Utiliza el FloatBuffer
+
+    // Configurar EBO
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL_STATIC_DRAW);
+
+    // Definir atributos de posición (layout location = 0) y coordenadas de textura
+    // (layout location = 1)
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * Float.BYTES, 0);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * Float.BYTES, 3 * Float.BYTES);
+    glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+  }
+
+  public void update(double deltaTime) {
+    // createVertex();
+    elapsedTime += deltaTime;
+    if (elapsedTime >= 1 / fps) {
+      textureIndex++;
+      elapsedTime = 0;
     }
+
+    if (textureIndex >= textureBuffer.size()) {
+      textureIndex = 0;
+    }
+    draw();
+  }
+
+  public void draw() {
+    glBindTexture(GL_TEXTURE_2D, textureIDs.get(textureIndex));
+
+    // Enlazar el VAO
+    glBindVertexArray(VAO);
+
+    // Dibujar, pilla el vao vinculado y la textura
+    glDrawElements(GL_TRIANGLES, this.indexs.length, GL_UNSIGNED_INT, 0);
+
+    // Los desvincula para evitar modificaciones accidentales
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+  }
 }
